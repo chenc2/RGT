@@ -80,21 +80,20 @@ def Compare():
 #   4. Update the path of ToolSet in the bimx file.
 #   5. Backup all pdo files.
 #   6. Create a new pdo file for run RGT.
-#   7. Recover all pdo files.
-#   8. Call RunCase function to generate report.
-#   9. Call Compare function to compare the result.
-#
+#   7. Run all test case.
+#   8. Recover all pdo files.
+#   9. Compare the result.
 def Start():
-    #TCSLib.RecursiveCheckTCS(CaseRoot, Expected, CmdFileName)
-    #TCSLib.RecursiveCleanUpTCS(CaseRoot, Expected, CmdFileName)
-    #CmdLib.RecursiveReplaceCmd(CaseRoot)
-    #UpdateBim.UpdateBim()
+    TCSLib.RecursiveCheckTCS(CaseRoot, Expected, CmdFileName)
+    TCSLib.RecursiveCleanUpTCS(CaseRoot, Expected, CmdFileName)
+    CmdLib.RecursiveReplaceCmd(CaseRoot)
+    UpdateBim.UpdateBim()
     PDOLib.MovePDO(ConfigLib.ConfigInfo.PDOFilePath, os.path.join(os.getcwd(),'etc'))
     PDOLib.CreateNewRepositoryPDO(os.path.join(os.getcwd(),'etc','PlatformProjectInventory.pdo'))
-    #RunCase()
-    RunOneCase('C:\Users\chenche4\Desktop\RGT Test Case\Manual\Func\ConfigSettingReport\TCS1')
+    RunCase()
+    #RunOneCase('C:\Users\chenche4\Desktop\RGT Test Case\Manual\Func\ConfigSettingReport\TCS1')
     PDOLib.MovePDO(os.path.join(os.getcwd(),'etc'), ConfigLib.ConfigInfo.PDOFilePath, True)
-    #Compare()
+    Compare()
 
 if __name__ == '__main__':
     Start()
