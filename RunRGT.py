@@ -5,6 +5,7 @@ import os
 import platform
 import ConfigLib
 import PDOLib
+import shlex
 
 #
 #   获取某个目录下所有.bim文件。
@@ -19,47 +20,7 @@ def GetAllBim(BimPath):
     return FileMap
 
 def GetCmdList(FilePath):
-    fd = open(FilePath, 'r')
-    String = fd.read().replace('RGT.exe', 'RGT')
-    fd.close()
-
-    #
-    #   RGT [flag] "T H E P A T H" will be split as
-    #   List[0] = RGT
-    #   List[1] = [flag]
-    #   List[2] = "T H E P A T H"
-    #
-
-    BufList = String.split()
-    RetList = []
-    Flag = False
-    for item in BufList:
-        if item[0] == '"':
-            RetList.append(item)
-            Flag = True
-        elif item[-1] == '"':
-            #
-            #   RetList[-1] = "T H E P A
-            #   item = T H"
-            #   Result: RetList[-1] = "T H E P A T H"
-            #
-            RetList[-1] = (RetList[-1] + ' ' + item)
-            Flag = False
-
-            #if 'Linux' in platform.system():
-            RetList[-1] = RetList[-1].strip('"')
-        else:
-            if Flag:
-                #
-                #   RetList[-1] = "T H E
-                #   item = P A
-                #   Result: RetList[-1] = "T H E P A
-                #
-                RetList[-1] = (RetList[-1] + ' ' + item)
-            else:
-                RetList.append(item)
-
-    return RetList
+    return shlex.split(GetCmdString(FilePath))
 
 def GetCmdString(FilePath):
     fd = open(FilePath, 'r')
