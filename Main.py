@@ -2,7 +2,6 @@
 import os
 import RunRGT
 import shutil
-import SkipList
 import RGTCompareLib
 import ConfigLib
 import TCSLib
@@ -23,6 +22,17 @@ ExpectedLogName = ConfigLib.ConfigInfo.ExpectedLogName
 CompLogName     = ConfigLib.ConfigInfo.CompLogName
 CompCSVName     = ConfigLib.ConfigInfo.CompCSVName
 ProjectPath     = os.path.join(os.getcwd(), ConfigLib.ConfigInfo.ProjectName)
+
+def GetPathList():
+    TheList = []
+    if os.path.isfile('List.txt'):
+        fd = open('List.txt')
+        Lines = fd.readlines()
+        fd.close()
+        
+        for line in Lines:
+            TheList.append(line.strip('\n'))
+    return TheList
 
 def DeleteDir(ThePath):
     if os.path.isdir(ThePath):
@@ -52,10 +62,23 @@ def RunOneCase(CasePath):
     DeleteDir(ProjectPath)
 
 def RunCase():
-    SList = SkipList.SkipList().GetSkipList()
     for parent,dirs,files in os.walk(CaseRoot):
         if CmdFileName in files:
-            if parent not in SList:
+            print parent
+            RunOneCase(parent)
+
+#
+#   If Skip = True,  The path of List.txt file will be skipped.
+#   If Skip = False, The path of List.txt file will be executed.
+#
+def RunCaseDebug(Skip = True):
+    SList = GetPathList()
+    for parent,dirs,files in os.walk(CaseRoot):
+        if CmdFileName in files:
+            if Skip and parent not in SList:
+                print parent
+                RunOneCase(parent)
+            elif not Skip and parent in SList:
                 print parent
                 RunOneCase(parent)
 

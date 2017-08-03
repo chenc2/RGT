@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 import CSVLib
-import SkipList
 import shutil
 
 #
