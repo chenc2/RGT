@@ -14,6 +14,7 @@
   <Win-TestCaseRoot>C:\Users\chenche4\Desktop\RGT Test Case</Win-TestCaseRoot>
   <Win-BimFilePath>C:\Users\chenche4\Desktop\RGT Test Case\BIMFiles</Win-BimFilePath>
   <Win-PDOFilePath>C:\Program Files (x86)\Intel\Intel(R) Firmware Engine\etc</Win-PDOFilePath>
+  <Win-ResultFilePath>C:\Users\chenche4\Desktop</Win-ResultFilePath>
 
   <Linux-TestCaseRoot>/home/chen/OC/RGT Test Case</Linux-TestCaseRoot>
   <Linux-BimFilePath>/home/chen/OC/RGT Test Case/BIMFiles</Linux-BimFilePath>

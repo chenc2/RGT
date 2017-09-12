@@ -22,8 +22,8 @@ class Config:
             self.PDOFilePath = root.getElementsByTagName('Linux-PDOFilePath')[0].firstChild.data
         else:
             self.TestCaseRoot = root.getElementsByTagName('Win-TestCaseRoot')[0].firstChild.data
-            self.BimFilePath = root.getElementsByTagName('Win-BimFilePath')[0].firstChild.data
-            self.PDOFilePath = root.getElementsByTagName('Win-PDOFilePath')[0].firstChild.data
-
+            self.BimFilePath  = root.getElementsByTagName('Win-BimFilePath')[0].firstChild.data
+            self.PDOFilePath  = root.getElementsByTagName('Win-PDOFilePath')[0].firstChild.data
+            self.ResultPath   = root.getElementsByTagName('Win-ResultFilePath')[0].firstChild.data
 
 ConfigInfo = Config()

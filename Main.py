@@ -9,6 +9,7 @@ import CmdLib
 import UpdateBim
 import PDOLib
 import platform
+import xlwt
 
 CaseRoot        = ConfigLib.ConfigInfo.TestCaseRoot
 BimFilePath     = ConfigLib.ConfigInfo.BimFilePath
@@ -21,6 +22,7 @@ TestResult      = ConfigLib.ConfigInfo.TestDirName
 ExpectedLogName = ConfigLib.ConfigInfo.ExpectedLogName
 CompLogName     = ConfigLib.ConfigInfo.CompLogName
 CompCSVName     = ConfigLib.ConfigInfo.CompCSVName
+ResultFilePath  = ConfigLib.ConfigInfo.ResultPath
 ProjectPath     = os.path.join(os.getcwd(), ConfigLib.ConfigInfo.ProjectName)
 
 def GetPathList():
@@ -83,18 +85,40 @@ def RunCaseDebug(Skip = True):
                 RunOneCase(parent)
 
 def Compare():
+    Result = []
     for parent, dirs, files in os.walk(CaseRoot):
         if CmdFileName in files:
             CreateDir(os.path.join(parent, CompDirName))
 
-            RGTCompareLib.CompareOneCase(
-                os.path.join(parent, Expected),
-                os.path.join(parent, TestResult),
-                ExpectedLogName,
-                TestLogName,
-                os.path.join(parent,CompDirName,CompCSVName),
-                os.path.join(parent,CompDirName,CompLogName)
-            )
+            L = RGTCompareLib.CompareOneCase(
+                  os.path.join(parent, Expected),
+                  os.path.join(parent, TestResult),
+                  ExpectedLogName,
+                  TestLogName,
+                  os.path.join(parent,CompDirName,CompCSVName),
+                  os.path.join(parent,CompDirName,CompLogName)
+                )
+            Result.append(L)
+
+    xls = xlwt.Workbook()
+    Sheet = xls.add_sheet('RGT Command Line')
+
+    Sheet.write(0, 0, 'Test Case Path')
+    Sheet.write(0, 1, 'Compare CSV')
+    Sheet.write(0, 2, 'Compare Log')
+
+    Row = 1
+    for Case in Result:
+        Sheet.write(Row, 0, Case[0])
+        if Case[0][len(CaseRoot):].split('\\')[1] == 'Conf' and Case[1] == '[Skip]':
+            Sheet.write(Row, 1, '[True]')
+        else:
+            Sheet.write(Row, 1, Case[1])
+        Sheet.write(Row, 2, Case[2])
+        Row = Row + 1
+    if os.path.isfile(os.path.join(ResultFilePath, 'Report.xls')):
+        os.remove(os.path.join(ResultFilePath, 'Report.xls'))
+    xls.save(os.path.join(ResultFilePath, 'Report.xls'))
 
 #
 #   1. Fix error test case, like .bimx format error.
@@ -107,15 +131,15 @@ def Compare():
 #   8. Recover all pdo files.
 #   9. Compare the result.
 def Start():
-    TCSLib.RecursiveCheckTCS(CaseRoot, Expected, CmdFileName)
-    TCSLib.RecursiveCleanUpTCS(CaseRoot, Expected, CmdFileName)
-    CmdLib.RecursiveReplaceCmd(CaseRoot)
-    UpdateBim.UpdateBim()
-    PDOLib.MovePDO(ConfigLib.ConfigInfo.PDOFilePath, os.path.join(os.getcwd(),'etc'))
-    PDOLib.CreateNewRepositoryPDO(os.path.join(os.getcwd(),'etc','PlatformProjectInventory.pdo'))
-    RunCase()
-    #RunOneCase('C:\Users\chenche4\Desktop\RGT Test Case\Manual\Func\ConfigSettingReport\TCS1')
-    PDOLib.MovePDO(os.path.join(os.getcwd(),'etc'), ConfigLib.ConfigInfo.PDOFilePath, True)
+    #TCSLib.RecursiveCheckTCS(CaseRoot, Expected, CmdFileName)
+    #TCSLib.RecursiveCleanUpTCS(CaseRoot, Expected, CmdFileName)
+    #CmdLib.RecursiveReplaceCmd(CaseRoot)
+    #UpdateBim.UpdateBim()
+    #PDOLib.MovePDO(ConfigLib.ConfigInfo.PDOFilePath, os.path.join(os.getcwd(),'etc'))
+    #PDOLib.CreateNewRepositoryPDO(os.path.join(os.getcwd(),'etc','PlatformProjectInventory.pdo'))
+    #RunCase()
+    #RunOneCase('C:\Users\chenche4\Desktop\RGT Test Case\Func\Basic\MaximumConfig_IA32\TCS10')
+    #PDOLib.MovePDO(os.path.join(os.getcwd(),'etc'), ConfigLib.ConfigInfo.PDOFilePath, True)
     Compare()
 
 if __name__ == '__main__':
