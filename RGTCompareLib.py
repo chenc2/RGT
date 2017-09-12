@@ -8,6 +8,7 @@ import os
 import CSVLib
 import CompareLib
 import filecmp
+import re
 
 def ReadFileString(FilePath):
     fd = open(FilePath, 'r')
@@ -51,6 +52,37 @@ def CompareOneCaseCSV(Expected,Test,SaveFilePath):
                                 SaveFilePath)
     fd.close()
 
+def CompareGenerateAtString(ExptString, TestString):
+    FixStringAt = [
+        'Configuration Settings Report generated at',
+        'Platform Inventory Report generated at',
+        'Firmware Inventory Report generated at',
+        'Flash Layout Report generated at',
+    ]
+    for string in FixStringAt:
+        Index1 = ExptString.find(string)
+        Index2 = ExptString.find('for project')
+        if Index1 != -1 and Index2 != -1:
+            pattern = re.compile(ExptString[:len(string)] + ' .*\.csv ' + ExptString[Index2:])
+            if pattern.match(TestString) != None:
+                return True
+    return False
+
+def CompareNoAtString(ExptString, TestString):
+    FixString = [
+        'Configuration Settings Report',
+        'Platform Inventory Report',
+        'Firmware Inventory Report',
+        'Flash Layout Report',
+    ]
+    for string in FixString:
+        Index1 = ExptString.find(string)
+        if Index1 != -1:
+            pattern = re.compile(ExptString[:len(string)] + ', .*, .*\.csv')
+            if pattern.match(TestString) != None:
+                return True
+    return False
+
 #
 #   ExpectedLogPath:    期待log文件
 #   TestLogPath:        测试log文件
@@ -64,10 +96,11 @@ def CompareOneCaseLog(ExpectedLogPath,TestLogPath,LogSavePath):
     #
     #   期待不存在或者内容为空，直接略过。
     #
-    if not os.path.isfile(ExpectedLogPath) or (
-        os.path.getsize(ExpectedLogPath) == 0 and
-        os.path.getsize(TestLogPath) != 0
-    ):
+    if not os.path.isfile(ExpectedLogPath) or \
+        (
+            os.path.getsize(ExpectedLogPath) == 0 and
+            os.path.getsize(TestLogPath) != 0
+        ):
         fd.write('[Skip]')
         fd.close()
         return
@@ -92,26 +125,28 @@ def CompareOneCaseLog(ExpectedLogPath,TestLogPath,LogSavePath):
         return
 
     #
-    #   优先处理
+    #   如果只有一行log信息的话，那么应该只有路径不一样。
+    #   如果存在多行log信息的话，我们只比较最后一行信息。
     #
-    if (
-        BothContainSubStr(ExpectedString, TestLogString, 'Configuration Settings Report generated at') or \
-        BothContainSubStr(ExpectedString, TestLogString, 'Platform Inventory Report generated at') or \
-        BothContainSubStr(ExpectedString, TestLogString, 'Firmware Inventory Report generated at') or \
-        BothContainSubStr(ExpectedString, TestLogString, 'Flash Layout Report generated at')
-       ):
-        fd.write('[True#]')
+    ExptOneLineString = ''
+    TestOneLineString = ''
+    if len(ExpectedString.split('\n')) == 1 and len(TestLogString.split('\n')) == 1:
+        ExptOneLineString = ExpectedString
+        TestOneLineString = TestLogString
+    else:
+        ExptOneLineString = ExpectedString.split('\n')[-1]
+        TestOneLineString = TestLogString.split('\n')[-1]
+
+    if CompareGenerateAtString(ExptOneLineString, TestOneLineString) or CompareNoAtString(ExptOneLineString, TestOneLineString):
+        fd.write('[True]')
         fd.close()
         return
 
-    if (
-        BothContainSubStr(ExpectedString, TestLogString, 'Configuration Settings Report') or \
-        BothContainSubStr(ExpectedString, TestLogString, 'Firmware Inventory Report') or \
-        BothContainSubStr(ExpectedString, TestLogString, 'Flash Layout Report') or \
-        BothContainSubStr(ExpectedString, TestLogString, 'Platform Inventory Report') or \
-        BothContainSubStr(ExpectedString, TestLogString, 'Error: 1: The Report specified was not found.')
-    ):
-        fd.write('[True]')
+    #
+    #   special case.
+    #
+    if BothContainSubStr(ExpectedString, TestLogString, 'Error: 1: The Report specified was not found.'):
+        fd.write('[#True#]')
         fd.close()
         return
 
@@ -153,4 +188,5 @@ def CompareOneCase(ExpectedPath, TestPath, ExpLogFileName, TestLogFileName, CSVS
     CompareOneCaseLog(os.path.join(ExpectedPath,ExpLogFileName),
                       os.path.join(TestPath,TestLogFileName),
                       LogSavePath)
-    print os.path.dirname(ExpectedPath) + '\t' + CheckCompareResult(CSVSavePath,LogSavePath)
+
+    return list((os.path.dirname(ExpectedPath) + '\t' + CheckCompareResult(CSVSavePath,LogSavePath)).split('\t'))
