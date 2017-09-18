@@ -110,12 +110,17 @@ def SaveResultInExcel(ResultInfo):
     Row = 1
     for Case in ResultInfo:
         Sheet.write(Row, 0, Case[0])
-        if Case[0][len(CaseRoot):].split('\\')[1] == 'Conf' and Case[1] == '[Skip]':
+        if 'Linux' in platform.system():
+          Slash = '/'
+        else:
+          Slash = '\\'
+        if Case[0][len(CaseRoot):].split(Slash)[1] == 'Conf' and Case[1] == '[Skip]':
             Sheet.write(Row, 1, '[True]')
         else:
             Sheet.write(Row, 1, Case[1])
         Sheet.write(Row, 2, Case[2])
         Row = Row + 1
+
     if os.path.isfile(os.path.join(ResultFilePath, 'Report.xls')):
         os.remove(os.path.join(ResultFilePath, 'Report.xls'))
     xls.save(os.path.join(ResultFilePath, 'Report.xls'))
