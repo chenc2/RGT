@@ -20,6 +20,7 @@ class Config:
             self.TestCaseRoot = root.getElementsByTagName('Linux-TestCaseRoot')[0].firstChild.data
             self.BimFilePath = root.getElementsByTagName('Linux-BimFilePath')[0].firstChild.data
             self.PDOFilePath = root.getElementsByTagName('Linux-PDOFilePath')[0].firstChild.data
+            self.ResultPath  = root.getElementsByTagName('Linux-ResultFilePath')[0].firstChild.data
         else:
             self.TestCaseRoot = root.getElementsByTagName('Win-TestCaseRoot')[0].firstChild.data
             self.BimFilePath  = root.getElementsByTagName('Win-BimFilePath')[0].firstChild.data

@@ -19,4 +19,5 @@
   <Linux-TestCaseRoot>/home/chen/OC/RGT Test Case</Linux-TestCaseRoot>
   <Linux-BimFilePath>/home/chen/OC/RGT Test Case/BIMFiles</Linux-BimFilePath>
   <Linux-PDOFilePath>/opt/Intel/Intel(R) Firmware Engine/etc</Linux-PDOFilePath>
+  <Linux-ResultFilePath>/home/chen</Linux-ResultFilePath>
 </Root>
