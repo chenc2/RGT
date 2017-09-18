@@ -45,6 +45,9 @@ def CreateDir(ThePath):
         shutil.rmtree(ThePath)
     os.mkdir(ThePath)
 
+#
+#   Run the test case of CasePath.
+#
 def RunOneCase(CasePath):
     TestResult = os.path.join(CasePath, TestResultName)
     CmdFilePath = os.path.join(CasePath, CmdFileName)
@@ -63,6 +66,9 @@ def RunOneCase(CasePath):
         RunRGT.RunCase(CmdFilePath, DstBimFilePath, ProjectPath, TestResult, TestLogName)
     DeleteDir(ProjectPath)
 
+#
+#   Walk all test case and run.
+#
 def RunCase():
     for parent,dirs,files in os.walk(CaseRoot):
         if CmdFileName in files:
@@ -70,8 +76,11 @@ def RunCase():
             RunOneCase(parent)
 
 #
+#   Function to run test case in debug mode.
 #   If Skip = True,  The path of List.txt file will be skipped.
 #   If Skip = False, The path of List.txt file will be executed.
+#   List.txt for debug, When debugging, you can skip some paths
+#   or execute special paths.
 #
 def RunCaseDebug(Skip = True):
     SList = GetPathList()
@@ -83,6 +92,33 @@ def RunCaseDebug(Skip = True):
             elif not Skip and parent in SList:
                 print parent
                 RunOneCase(parent)
+
+#
+#   Each ResultInfo is the list type.
+#   ResultInfo[x][0] is the path of test case
+#   ResultInfo[x][1] is the result of compare csv
+#   ResultInfo[x][2] is the result of compare log
+#
+def SaveResultInExcel(ResultInfo):
+    xls = xlwt.Workbook()
+    Sheet = xls.add_sheet('RGT Command Line')
+
+    Sheet.write(0, 0, 'Test Case Path')
+    Sheet.write(0, 1, 'Compare CSV')
+    Sheet.write(0, 2, 'Compare Log')
+
+    Row = 1
+    for Case in ResultInfo:
+        Sheet.write(Row, 0, Case[0])
+        if Case[0][len(CaseRoot):].split('\\')[1] == 'Conf' and Case[1] == '[Skip]':
+            Sheet.write(Row, 1, '[True]')
+        else:
+            Sheet.write(Row, 1, Case[1])
+        Sheet.write(Row, 2, Case[2])
+        Row = Row + 1
+    if os.path.isfile(os.path.join(ResultFilePath, 'Report.xls')):
+        os.remove(os.path.join(ResultFilePath, 'Report.xls'))
+    xls.save(os.path.join(ResultFilePath, 'Report.xls'))
 
 def Compare():
     Result = []
@@ -100,25 +136,7 @@ def Compare():
                 )
             Result.append(L)
 
-    xls = xlwt.Workbook()
-    Sheet = xls.add_sheet('RGT Command Line')
-
-    Sheet.write(0, 0, 'Test Case Path')
-    Sheet.write(0, 1, 'Compare CSV')
-    Sheet.write(0, 2, 'Compare Log')
-
-    Row = 1
-    for Case in Result:
-        Sheet.write(Row, 0, Case[0])
-        if Case[0][len(CaseRoot):].split('\\')[1] == 'Conf' and Case[1] == '[Skip]':
-            Sheet.write(Row, 1, '[True]')
-        else:
-            Sheet.write(Row, 1, Case[1])
-        Sheet.write(Row, 2, Case[2])
-        Row = Row + 1
-    if os.path.isfile(os.path.join(ResultFilePath, 'Report.xls')):
-        os.remove(os.path.join(ResultFilePath, 'Report.xls'))
-    xls.save(os.path.join(ResultFilePath, 'Report.xls'))
+    SaveResultInExcel(Result)
 
 #
 #   1. Fix error test case, like .bimx format error.
