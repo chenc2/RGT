@@ -21,10 +21,12 @@ class Config:
             self.BimFilePath = root.getElementsByTagName('Linux-BimFilePath')[0].firstChild.data
             self.PDOFilePath = root.getElementsByTagName('Linux-PDOFilePath')[0].firstChild.data
             self.ResultPath  = root.getElementsByTagName('Linux-ResultFilePath')[0].firstChild.data
+            self.Exception   = root.getElementsByTagName('Linux-ExceptionList')[0].firstChild.data
         else:
             self.TestCaseRoot = root.getElementsByTagName('Win-TestCaseRoot')[0].firstChild.data
             self.BimFilePath  = root.getElementsByTagName('Win-BimFilePath')[0].firstChild.data
             self.PDOFilePath  = root.getElementsByTagName('Win-PDOFilePath')[0].firstChild.data
             self.ResultPath   = root.getElementsByTagName('Win-ResultFilePath')[0].firstChild.data
+            self.Exception    = root.getElementsByTagName('Win-ExceptionList')[0].firstChild.data
 
 ConfigInfo = Config()

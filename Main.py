@@ -23,6 +23,7 @@ ExpectedLogName = ConfigLib.ConfigInfo.ExpectedLogName
 CompLogName     = ConfigLib.ConfigInfo.CompLogName
 CompCSVName     = ConfigLib.ConfigInfo.CompCSVName
 ResultFilePath  = ConfigLib.ConfigInfo.ResultPath
+ExceptionDir    = ConfigLib.ConfigInfo.Exception
 ProjectPath     = os.path.join(os.getcwd(), ConfigLib.ConfigInfo.ProjectName)
 
 def GetPathList():
@@ -125,7 +126,23 @@ def SaveResultInExcel(ResultInfo):
         os.remove(os.path.join(ResultFilePath, 'Report.xls'))
     xls.save(os.path.join(ResultFilePath, 'Report.xls'))
 
+#
+#   读取Exception列表，其中是用于过滤的内容。
+#   开发那边code会进行修改，从而导致flashlayout或者size有变化。
+#   但是这样的变化是符合的，需要把这些内容进行过滤掉。
+#
+def GetExceptionContent():
+    Content = []
+    for file in os.listdir(ExceptionDir):
+        fd = open(os.path.join(ExceptionDir, file))
+        Buffer = fd.read()
+        fd.close()
+        Content.append(Buffer)
+    return Content
+
 def Compare():
+    ExceptionContentList = GetExceptionContent()
+    
     Result = []
     for parent, dirs, files in os.walk(CaseRoot):
         if CmdFileName in files:
@@ -137,22 +154,24 @@ def Compare():
                   ExpectedLogName,
                   TestLogName,
                   os.path.join(parent,CompDirName,CompCSVName),
-                  os.path.join(parent,CompDirName,CompLogName)
+                  os.path.join(parent,CompDirName,CompLogName),
+                  ExceptionContentList
                 )
             Result.append(L)
 
     SaveResultInExcel(Result)
 
 #
-#   1. Fix error test case, like .bimx format error.
-#   2. Clean up redundancy folder.
-#   3. Replace the path in the test command.
-#   4. Update the path of ToolSet in the bimx file.
-#   5. Backup all pdo files.
-#   6. Create a new pdo file for run RGT.
-#   7. Run all test case.
-#   8. Recover all pdo files.
-#   9. Compare the result.
+#   1. Check test cases are all valid.
+#   2. Clean up unuseless in each test case.
+#   3. Fix the path in the cmd.txt file.
+#   4. Update .bimx file by current env settings.
+#   5. Back up pdo files.
+#   6. Create new pdo files for test.
+#   7. RunCase(all cases) or RunOneCase(for debug).
+#   8. Restore the original PDO files.
+#   9. Compare the test result and generate report.
+#
 def Start():
     #TCSLib.RecursiveCheckTCS(CaseRoot, Expected, CmdFileName)
     #TCSLib.RecursiveCleanUpTCS(CaseRoot, Expected, CmdFileName)

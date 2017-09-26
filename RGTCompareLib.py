@@ -156,19 +156,28 @@ def CompareOneCaseLog(ExpectedLogPath,TestLogPath,LogSavePath):
 #
 #   查看CSV和log的比较结果。
 #
-def CheckCompareResult(CSVResultPath,LogResultPath):
+def CheckCompareResult(CSVResultPath,LogResultPath,ExceptionContentList):
+    #
+    #   CSVResultPath中保存的是比较csv的内容。
+    #
     String1 = ReadFileString(CSVResultPath)
 
     if String1 == '':
         StringToReturn = '[True]'
     else:
-        if String1 == 'Both no csv' or String1 == 'Expected no csv':
-            StringToReturn = '[Skip]'
+        if String1 == 'Both no csv':
+            StringToReturn = '[True]'
+        elif String1 == 'Expected no csv':
+            StringToReturn = '[Fix]'
         elif String1 == 'Test no csv':
             StringToReturn = '[Error]'
+        #
+        #   Exception
+        #
+        elif String1 in ExceptionContentList:
+            StringToReturn = '[True]'
         else:
             StringToReturn = '[Check]'
-
     return StringToReturn + '\t' + ReadFileString(LogResultPath)
 
 #
@@ -183,10 +192,10 @@ def CheckCompareResult(CSVResultPath,LogResultPath):
 #   Param5 : 测试log文件名
 #   Param6 : 保存对比csv结果路径
 #   Param7 : 保存对比log结果路径
-def CompareOneCase(ExpectedPath, TestPath, ExpLogFileName, TestLogFileName, CSVSavePath, LogSavePath):
+def CompareOneCase(ExpectedPath, TestPath, ExpLogFileName, TestLogFileName, CSVSavePath, LogSavePath, ExceptionContentList):
     CompareOneCaseCSV(ExpectedPath, TestPath, CSVSavePath)
     CompareOneCaseLog(os.path.join(ExpectedPath,ExpLogFileName),
                       os.path.join(TestPath,TestLogFileName),
                       LogSavePath)
 
-    return list((os.path.dirname(ExpectedPath) + '\t' + CheckCompareResult(CSVSavePath,LogSavePath)).split('\t'))
+    return list((os.path.dirname(ExpectedPath) + '\t' + CheckCompareResult(CSVSavePath,LogSavePath,ExceptionContentList)).split('\t'))
