@@ -107,6 +107,7 @@ def SaveResultInExcel(ResultInfo):
     Sheet.write(0, 0, 'Test Case Path')
     Sheet.write(0, 1, 'Compare CSV')
     Sheet.write(0, 2, 'Compare Log')
+    Sheet.write(0, 3, 'Case Result')
 
     Row = 1
     for Case in ResultInfo:
@@ -115,11 +116,15 @@ def SaveResultInExcel(ResultInfo):
           Slash = '/'
         else:
           Slash = '\\'
-        if Case[0][len(CaseRoot):].split(Slash)[1] == 'Conf' and Case[1] == '[Skip]':
-            Sheet.write(Row, 1, '[True]')
-        else:
-            Sheet.write(Row, 1, Case[1])
+
+        Sheet.write(Row, 1, Case[1])
         Sheet.write(Row, 2, Case[2])
+
+        if Case[1] == Case[2] and Case[1] == u'[True]':
+            Sheet.write(Row, 3, u'Pass')
+        else:
+            Sheet.write(Row, 3, u'Fail')
+
         Row = Row + 1
 
     if os.path.isfile(os.path.join(ResultFilePath, 'Report.xls')):
