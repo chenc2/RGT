@@ -141,6 +141,8 @@ def GetExceptionContent():
     for file in os.listdir(ExceptionDir):
         fd = open(os.path.join(ExceptionDir, file))
         Buffer = fd.read()
+        if 'Linux' in platform.system():
+            Buffer = Buffer.replace('\\','/')
         fd.close()
         Content.append(Buffer)
     return Content

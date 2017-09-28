@@ -12,9 +12,16 @@ import re
 
 def ReadFileString(FilePath):
     fd = open(FilePath, 'r')
-    string = fd.read()
+    string = fd.read().replace('\r', '')
     fd.close()
-    return string
+
+    #
+    #   都去掉最后的'\n'符号
+    #
+    if len(string) != 0 and string[-1] == '\n':
+        return string[:-1]
+    else:
+        return string
 
 def IsContainSubStr(String, SubStr):
     return String.find(SubStr) != -1
@@ -174,7 +181,7 @@ def CheckCompareResult(CSVResultPath,LogResultPath,ExceptionContentList):
         #
         #   Exception
         #
-        elif String1 in ExceptionContentList:
+        elif String1+'\n' in ExceptionContentList:
             StringToReturn = '[True]'
         else:
             StringToReturn = '[Check]'
