@@ -20,7 +20,7 @@ class Config:
         self.CompCSVName    = root.getElementsByTagName('CompCSVName')[0].firstChild.data
 
         self.CmdFileName    = root.getElementsByTagName('CmdFileName')[0].firstChild.data
-    
+
         self.ProjectName    = root.getElementsByTagName('ProjectName')[0].firstChild.data
         self.CaseRootTxt    = root.getElementsByTagName('CaseRootTxt')[0].firstChild.data
 
@@ -40,9 +40,14 @@ class Config:
         self.WinPDOFileDir  = root.getElementsByTagName('WinPDOFileDir')[0].firstChild.data
         self.LinPDOFileDir  = root.getElementsByTagName('LinPDOFileDir')[0].firstChild.data
 
-        if not os.path.isdir(self.WinPDOFileDir) or not os.path.isdir(self.LinPDOFileDir):
-            print "Please check the path of PDO files."
-            assert(False)
+        if 'Linux' in platform.system():
+            if not os.path.isdir(self.LinPDOFileDir):
+                print "Please check the path of PDO files."
+                assert(False)
+        else:
+            if not os.path.isdir(self.WinPDOFileDir):
+                print "Please check the path of PDO files."
+                assert(False)
 
         self.TestCaseDir    = root.getElementsByTagName('TestCaseDir')[0].firstChild.data
         self.BimxFileDir    = root.getElementsByTagName('BimxFileDir')[0].firstChild.data

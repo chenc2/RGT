@@ -1,11 +1,11 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <!--
-		The following 12 configuration is default settings,
-		If you want to change, please make sure you are familiar
-		with the logic of test process.
+
+  <!--	The following 12 configuration is default settings,
+		If you want to change, please make sure you are 
+		familiar with the logic of test process.
   -->
-  <ExpectedDirName>ExpectedResult</Expected>
+  <ExpectedDirName>ExpectedResult</ExpectedDirName>
   <ExpectedLogName>log.txt</ExpectedLogName>
 
   <TestDirName>TestResult</TestDirName>
@@ -15,17 +15,17 @@
   <CompLogName>CompLog.txt</CompLogName>
   <CompCSVName>CompCSV.txt</CompCSVName>
 
-  <CmdFileName>cmd.txt</Command>
+  <CmdFileName>cmd.txt</CmdFileName>
 
   <ProjectName>TempProject</ProjectName>
   <CaseRootTxt>CaseRoot.txt</CaseRootTxt>
 
-  <WinPDOFileDir>C:\Program Files (x86)\Intel\Intel(R) Firmware Engine\etc</WinPDOFilePath>
-  <LinPDOFileDir>/opt/Intel/Intel(R) Firmware Engine/etc</LinPDOFilePath>
+  <WinPDOFileDir>C:\Program Files (x86)\Intel\Intel(R) Firmware Engine\etc</WinPDOFileDir>
+  <LinPDOFileDir>/opt/Intel/Intel(R) Firmware Engine/etc</LinPDOFileDir>
   
   <!-- Make sure the following configuration is match with your test environment-->
-  <TestCaseDir></TestCaseDir>
-  <BimxFileDir></BimxFileDir>
-  <ResultDir></ResultDir>
-  <ExceptionDir></ExceptionDir>
+  <TestCaseDir>C:\Users\chenche4\Desktop\RGT Test Case</TestCaseDir>
+  <BimxFileDir>C:\Users\chenche4\Desktop\RGT Test Case\BIMFiles</BimxFileDir>
+  <ResultDir>C:\Users\chenche4\Desktop\RGT Test Case</ResultDir>
+  <ExceptionDir>C:\Users\chenche4\Desktop\SC_1st\Win-ExpectionList</ExceptionDir>
 </Root>
