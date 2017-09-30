@@ -1,32 +1,60 @@
 # -*- coding: UTF-8 -*-
 import xml.dom.minidom
 import platform
+import os
 
+#
+#   读取Config.xml配置文件。
+#
 class Config:
     def __init__(self):
         root = xml.dom.minidom.parse('Config.xml').documentElement
-        self.Expected = root.getElementsByTagName('Expected')[0].firstChild.data
-        self.Command = root.getElementsByTagName('Command')[0].firstChild.data
+        self.ExpectedDirName = root.getElementsByTagName('ExpectedDirName')[0].firstChild.data
         self.ExpectedLogName = root.getElementsByTagName('ExpectedLogName')[0].firstChild.data
-        self.TestDirName = root.getElementsByTagName('TestDirName')[0].firstChild.data
-        self.CompDirName = root.getElementsByTagName('CompDirName')[0].firstChild.data
-        self.TestLogName = root.getElementsByTagName('TestLogName')[0].firstChild.data
-        self.CompLogName = root.getElementsByTagName('CompLogName')[0].firstChild.data
-        self.CompCSVName = root.getElementsByTagName('CompCSVName')[0].firstChild.data
-        self.ProjectName = root.getElementsByTagName('ProjectName')[0].firstChild.data
-        self.CaseRootTxt = root.getElementsByTagName('CaseRootTxt')[0].firstChild.data
 
-        if 'Linux' in platform.system():
-            self.TestCaseRoot = root.getElementsByTagName('Linux-TestCaseRoot')[0].firstChild.data
-            self.BimFilePath = root.getElementsByTagName('Linux-BimFilePath')[0].firstChild.data
-            self.PDOFilePath = root.getElementsByTagName('Linux-PDOFilePath')[0].firstChild.data
-            self.ResultPath  = root.getElementsByTagName('Linux-ResultFilePath')[0].firstChild.data
-            self.Exception   = root.getElementsByTagName('Linux-ExceptionList')[0].firstChild.data
-        else:
-            self.TestCaseRoot = root.getElementsByTagName('Win-TestCaseRoot')[0].firstChild.data
-            self.BimFilePath  = root.getElementsByTagName('Win-BimFilePath')[0].firstChild.data
-            self.PDOFilePath  = root.getElementsByTagName('Win-PDOFilePath')[0].firstChild.data
-            self.ResultPath   = root.getElementsByTagName('Win-ResultFilePath')[0].firstChild.data
-            self.Exception    = root.getElementsByTagName('Win-ExceptionList')[0].firstChild.data
+        self.TestDirName    = root.getElementsByTagName('TestDirName')[0].firstChild.data
+        self.TestLogName    = root.getElementsByTagName('TestLogName')[0].firstChild.data
+    
+        self.CompDirName    = root.getElementsByTagName('CompDirName')[0].firstChild.data
+        self.CompLogName    = root.getElementsByTagName('CompLogName')[0].firstChild.data
+        self.CompCSVName    = root.getElementsByTagName('CompCSVName')[0].firstChild.data
+
+        self.CmdFileName    = root.getElementsByTagName('CmdFileName')[0].firstChild.data
+    
+        self.ProjectName    = root.getElementsByTagName('ProjectName')[0].firstChild.data
+        self.CaseRootTxt    = root.getElementsByTagName('CaseRootTxt')[0].firstChild.data
+
+        if (    self.ExpectedDirName == "" or \
+                self.ExpectedLogName == "" or \
+                self.TestDirName == "" or \
+                self.TestLogName == "" or \
+                self.CompDirName == "" or \
+                self.CompLogName == "" or \
+                self.CmdFileName == "" or \
+                self.ProjectName == "" or \
+                self.CaseRootTxt == ""
+           ):
+            print "Please check config.xml file, it has error configuration."
+            assert(False)
+
+        self.WinPDOFileDir  = root.getElementsByTagName('WinPDOFileDir')[0].firstChild.data
+        self.LinPDOFileDir  = root.getElementsByTagName('LinPDOFileDir')[0].firstChild.data
+
+        if not os.path.isdir(self.WinPDOFileDir) or not os.path.isdir(self.LinPDOFileDir):
+            print "Please check the path of PDO files."
+            assert(False)
+
+        self.TestCaseDir    = root.getElementsByTagName('TestCaseDir')[0].firstChild.data
+        self.BimxFileDir    = root.getElementsByTagName('BimxFileDir')[0].firstChild.data
+        self.ResultDir      = root.getElementsByTagName('ResultDir')[0].firstChild.data
+        self.ExceptionDir   = root.getElementsByTagName('ExceptionDir')[0].firstChild.data
+
+        if (    not os.path.isdir(self.TestCaseDir) or \
+                not os.path.isdir(self.BimxFileDir) or \
+                not os.path.isdir(self.ResultDir) or 
+                not os.path.isdir(self.ExceptionDir)
+           ):
+            print "Please check config.xml file, it has error configuration."
+            assert(False)
 
 ConfigInfo = Config()

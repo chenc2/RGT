@@ -1,25 +1,31 @@
 <?xml version="1.0" ?>
 <Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <Expected>ExpectedResult</Expected>
-  <Command>cmd.txt</Command>
+  <!--
+		The following 12 configuration is default settings,
+		If you want to change, please make sure you are familiar
+		with the logic of test process.
+  -->
+  <ExpectedDirName>ExpectedResult</Expected>
   <ExpectedLogName>log.txt</ExpectedLogName>
+
   <TestDirName>TestResult</TestDirName>
-  <CompDirName>CompareResult</CompDirName>
   <TestLogName>log.txt</TestLogName>
+
+  <CompDirName>CompareResult</CompDirName>
   <CompLogName>CompLog.txt</CompLogName>
   <CompCSVName>CompCSV.txt</CompCSVName>
+
+  <CmdFileName>cmd.txt</Command>
+
   <ProjectName>TempProject</ProjectName>
   <CaseRootTxt>CaseRoot.txt</CaseRootTxt>
 
-  <Win-TestCaseRoot>C:\Users\chenche4\Desktop\RGT Test Case</Win-TestCaseRoot>
-  <Win-BimFilePath>C:\Users\chenche4\Desktop\RGT Test Case\BIMFiles</Win-BimFilePath>
-  <Win-PDOFilePath>C:\Program Files (x86)\Intel\Intel(R) Firmware Engine\etc</Win-PDOFilePath>
-  <Win-ResultFilePath>C:\Users\chenche4\Desktop</Win-ResultFilePath>
-  <Win-ExceptionList>C:\Users\chenche4\Desktop\SC_1st\ExpectionList</Win-ExceptionList>
-
-  <Linux-TestCaseRoot>/home/chen/OC/RGT Test Case</Linux-TestCaseRoot>
-  <Linux-BimFilePath>/home/chen/OC/RGT Test Case/BIMFiles</Linux-BimFilePath>
-  <Linux-PDOFilePath>/opt/Intel/Intel(R) Firmware Engine/etc</Linux-PDOFilePath>
-  <Linux-ResultFilePath>/home/chen</Linux-ResultFilePath>
-  <Linux-ExceptionList>/home/chen/exception</Linux-ExceptionList>
+  <WinPDOFileDir>C:\Program Files (x86)\Intel\Intel(R) Firmware Engine\etc</WinPDOFilePath>
+  <LinPDOFileDir>/opt/Intel/Intel(R) Firmware Engine/etc</LinPDOFilePath>
+  
+  <!-- Make sure the following configuration is match with your test environment-->
+  <TestCaseDir></TestCaseDir>
+  <BimxFileDir></BimxFileDir>
+  <ResultDir></ResultDir>
+  <ExceptionDir></ExceptionDir>
 </Root>
