@@ -9,19 +9,7 @@ import CSVLib
 import CompareLib
 import filecmp
 import re
-
-def ReadFileString(FilePath):
-    fd = open(FilePath, 'r')
-    string = fd.read().replace('\r', '')
-    fd.close()
-
-    #
-    #   都去掉最后的'\n'符号
-    #
-    if len(string) != 0 and string[-1] == '\n':
-        return string[:-1]
-    else:
-        return string
+import CommonLib
 
 def IsContainSubStr(String, SubStr):
     return String.find(SubStr) != -1
@@ -120,8 +108,8 @@ def CompareOneCaseLog(ExpectedLogPath,TestLogPath,LogSavePath):
         fd.close()
         return
 
-    ExpectedString = ReadFileString(ExpectedLogPath)
-    TestLogString = ReadFileString(TestLogPath)
+    ExpectedString = CommonLib.ReadFile(ExpectedLogPath)
+    TestLogString = CommonLib.ReadFile(TestLogPath)
 
     #
     #   试图比较正确的log信息。
@@ -167,7 +155,7 @@ def CheckCompareResult(CSVResultPath,LogResultPath,ExceptionContentList):
     #
     #   CSVResultPath中保存的是比较csv的内容。
     #
-    String1 = ReadFileString(CSVResultPath)
+    String1 = CommonLib.ReadFile(CSVResultPath)
 
     if String1 == '':
         StringToReturn = '[True]'
@@ -181,11 +169,11 @@ def CheckCompareResult(CSVResultPath,LogResultPath,ExceptionContentList):
         #
         #   Exception
         #
-        elif String1+'\n' in ExceptionContentList:
+        elif String1 in ExceptionContentList:
             StringToReturn = '[True]'
         else:
             StringToReturn = '[Check]'
-    return StringToReturn + '\t' + ReadFileString(LogResultPath)
+    return StringToReturn + '\t' + CommonLib.ReadFile(LogResultPath)
 
 #
 #   1. 比较CSV文件

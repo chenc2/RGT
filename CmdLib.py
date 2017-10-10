@@ -2,15 +2,13 @@
 import os
 import platform
 import ConfigLib
+import CommonLib
 
+#
+#   用NewString替换OldString，并且重新写入到FilePath文件中。
+#
 def ReplaceEx(FilePath, OldString, NewString):
-    fd = open(FilePath, 'r')
-    Strings = fd.read().replace(OldString, NewString)
-    fd.close()
-
-    fd = open(FilePath, 'w')
-    fd.write(Strings)
-    fd.close()
+    CommonLib.WriteFile(FilePath, CommonLib.ReadFile(FilePath).replace(OldString, NewString))
 
 #
 #   Replace the path recursively.
@@ -19,10 +17,7 @@ def ReplaceEx(FilePath, OldString, NewString):
 #   So we replace it by actually path.
 #
 def RecursiveReplaceCmd(RootPath):
-    fd = open(os.path.join(RootPath,ConfigLib.ConfigInfo.CaseRootTxt))
-    OldStr = fd.read()
-    fd.close()
-
+    OldStr = CommonLib.ReadFile(os.path.join(RootPath,ConfigLib.ConfigInfo.CaseRootTxt))
     NewStr = RootPath
 
     if OldStr == NewStr:
@@ -38,6 +33,4 @@ def RecursiveReplaceCmd(RootPath):
     #
     #   Update the path.
     #
-    fd = open(os.path.join(RootPath,ConfigLib.ConfigInfo.CaseRootTxt), 'w')
-    fd.write(NewStr)
-    fd.close()
+    CommonLib.WriteFile(os.path.join(RootPath,ConfigLib.ConfigInfo.CaseRootTxt), NewStr)

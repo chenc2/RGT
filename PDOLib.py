@@ -1,20 +1,15 @@
 # -*- coding: UTF-8 -*-
-
-import ConfigLib
+from ConfigLib import ConfigInfo
 import platform
 import os
 import shutil
+import CommonLib
 
 #
 #   Construct a new RepositoryInventory.pdo file by an exists PDO file.
 #
 def CreateNewRepositoryPDO(TheOldFile):
-    fd = open(TheOldFile)
-
-    Lines = []
-    for line in fd.readlines():
-        Lines.append(line.strip('\n'))
-    fd.close()
+    Lines = CommonLib.ReadFileList(TheOldFile)
     
     String = ''
     for index in range(0,len(Lines)):
@@ -24,13 +19,13 @@ def CreateNewRepositoryPDO(TheOldFile):
             String = String + Lines[index+2] + '\n'
 
     assert(len(String) != 0)
-            
-    fd = open(os.path.join(ConfigLib.ConfigInfo.PDOFilePath, 'PlatformProjectInventory.pdo'), 'w')
-    fd.write(String)
-    fd.write('[Project_2]\n')
-    fd.write('Path = ' + os.path.join(os.getcwd(),ConfigLib.ConfigInfo.ProjectName))
-    fd.close()
 
+    String = String + '[Project_2]\n' + 'Path = ' + os.path.join(os.getcwd(),ConfigInfo.ProjectName)
+    CommonLib.WriteFile(os.path.join(ConfigInfo.PDOFileDir, 'PlatformProjectInventory.pdo'), String)
+
+#
+#
+#
 def MovePDO(Src, Dst, DeleteSrc = False):
     if not os.path.isdir(Src):
         assert(False)
@@ -49,11 +44,13 @@ def MovePDO(Src, Dst, DeleteSrc = False):
 #   Get the value of PDO file by one key-name.
 #
 def GetValueFromPDO(FileName, KeyName):
-    fd = open(os.path.join(ConfigLib.ConfigInfo.PDOFilePath, FileName))
-    for line in fd.readlines():
+    List = CommonLib.ReadFileList(os.path.join(ConfigInfo.PDOFileDir, FileName))
+    slash = '\\'
+    if 'Linux' in platform.system():
+        slash = '/'
+
+    for line in List:
         if line.find(KeyName) == 0:
-            if 'Linux' in platform.system():
-                return line.split('=')[1][1:].strip('\n') + '/'
-            else:
-                return line.split('=')[1][1:].strip('\n') + '\\'
+                return line.split('=')[1][1:].strip('\n') + slash
+
     assert(False)

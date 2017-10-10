@@ -37,15 +37,14 @@ class Config:
             print "Please check config.xml file, it has error configuration."
             assert(False)
 
-        self.WinPDOFileDir  = root.getElementsByTagName('WinPDOFileDir')[0].firstChild.data
-        self.LinPDOFileDir  = root.getElementsByTagName('LinPDOFileDir')[0].firstChild.data
-
         if 'Linux' in platform.system():
-            if not os.path.isdir(self.LinPDOFileDir):
+            self.PDOFileDir  = root.getElementsByTagName('LinPDOFileDir')[0].firstChild.data
+            if not os.path.isdir(self.PDOFileDir):
                 print "Please check the path of PDO files."
                 assert(False)
         else:
-            if not os.path.isdir(self.WinPDOFileDir):
+            self.PDOFileDir  = root.getElementsByTagName('WinPDOFileDir')[0].firstChild.data
+            if not os.path.isdir(self.PDOFileDir):
                 print "Please check the path of PDO files."
                 assert(False)
 

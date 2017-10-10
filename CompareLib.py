@@ -15,7 +15,7 @@ def DoCompareCSV(FilePath1,FilePath2,ResultFilePath):
 
     CSVType1 = CSVLib.GetCSVType(FilePath1)
     CSVType2 = CSVLib.GetCSVType(FilePath2)
-	
+
     if CSVType1 != CSVType2:
         print FilePath1,'Type of .csv files are not same!'
         assert(False)

@@ -21,11 +21,11 @@
   <CaseRootTxt>CaseRoot.txt</CaseRootTxt>
 
   <WinPDOFileDir>C:\Program Files (x86)\Intel\Intel(R) Firmware Engine\etc</WinPDOFileDir>
-  <LinPDOFileDir>/opt/Intel/Intel(R) Firmware Engine/etc</LinPDOFileDir>
+  <LinPDOFileDir></LinPDOFileDir>
   
   <!-- Make sure the following configuration is match with your test environment-->
   <TestCaseDir>C:\Users\chenche4\Desktop\RGT Test Case</TestCaseDir>
   <BimxFileDir>C:\Users\chenche4\Desktop\RGT Test Case\BIMFiles</BimxFileDir>
   <ResultDir>C:\Users\chenche4\Desktop\RGT Test Case</ResultDir>
-  <ExceptionDir>C:\Users\chenche4\Desktop\SC_1st\Win-ExpectionList</ExceptionDir>
+  <ExceptionDir>C:\Users\chenche4\Desktop\SC_2nd\Win-ExpectionList</ExceptionDir>
 </Root>

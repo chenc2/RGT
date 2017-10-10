@@ -6,6 +6,7 @@ import platform
 import ConfigLib
 import PDOLib
 import shlex
+import CommonLib
 
 #
 #   获取某个目录下所有.bim文件。
@@ -23,19 +24,12 @@ def GetCmdList(FilePath):
     return shlex.split(GetCmdString(FilePath))
 
 def GetCmdString(FilePath):
-    fd = open(FilePath, 'r')
-    String = fd.read().replace('RGT.exe', 'RGT')
-    fd.close()
-
-    return String
+    return CommonLib.ReadFile(FilePath).replace('RGT.exe', 'RGT')
 
 def WriteFile(FilePath,String):
-    fd = open(FilePath, 'w')
     if 'Linux' in platform.system() and len(String) != 0:
-        fd.write(String + '\n')
-    else:
-        fd.write(String)
-    fd.close()
+        String = String + '\n'
+    CommonLib.WriteFile(FilePath, String)
 
 #
 #   Copy bim file is depends on test command.
@@ -76,7 +70,8 @@ def RunErrCase(CmdFilePath, SavePath):
     WriteFile(SavePath, RGTRet.communicate()[1].strip('\n'))
 
 def RunHelpCase(CmdFilePath, SavePath):
-    RGTRet = subprocess.Popen(GetCmdList(CmdFilePath), stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
+    Cmd = GetCmdList(CmdFilePath)
+    RGTRet = subprocess.Popen(Cmd, stdout = subprocess.PIPE, stderr = subprocess.PIPE, shell = False)
     WriteFile(SavePath, RGTRet.stdout.read().strip('\n'))
 
 def RunDebugCase(CmdList, SavePath):
