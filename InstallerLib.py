@@ -10,6 +10,9 @@ import xml.dom.minidom
 
 InstallerConfigInfo = dict()
 
+def GetConfigInfo():
+    return InstallerConfigInfo
+
 def InitializeInstallerLib():
     root = xml.dom.minidom.parse('IntelFirmwareEngine.xml').documentElement
     InstallerConfigInfo['InstallerDir'] = root.getElementsByTagName('InstallerDir')[0].firstChild.data
@@ -21,32 +24,6 @@ def InitializeInstallerLib():
     InstallerConfigInfo['PlatformProjectInventory'] = root.getElementsByTagName('PlatformProjectInventory')[0].firstChild.data
     InstallerConfigInfo['RepositoryInventory'] = root.getElementsByTagName('RepositoryInventory')[0].firstChild.data
     InstallerConfigInfo['ToolsetInventory'] = root.getElementsByTagName('ToolsetInventory')[0].firstChild.data
-
-def SetEnvVariable():
-    if 'Linux' in platform.system():
-        return
-
-    import win32api
-    import win32con
-
-    Key = win32api.RegOpenKey(
-            win32con.HKEY_LOCAL_MACHINE,
-            "SYSTEM\\ControlSet001\\Control\\Session Manager\\Environment",
-            0,
-            win32con.KEY_ALL_ACCESS)
-
-    Value = list(win32api.RegQueryValueEx(Key, 'Path'))[0]
-    NewValue = []
-    for path in Value.split(';'):
-        if 'Intel(R) Firmware Engine' in path:
-            pass
-        else:
-            NewValue.append(path)
-
-    FilePath = os.path.join(InstallerConfigInfo['PDOFileDir'], InstallerConfigInfo['InstallationInventory'])
-    SetValue = ';'.join(NewValue) + ';' + PDOLib.GetValueFromPDO(FilePath, 'ToolSet')
-    win32api.RegSetValueEx(Key, 'Path', 0, win32con.REG_SZ, SetValue)
-    win32api.RegCloseKey(Key)
 
 #
 #   检查PDO目录是否存在，并且检查4个.pdo文件是否存在。

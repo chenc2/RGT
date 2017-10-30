@@ -7,6 +7,7 @@ import ConfigLib
 import PDOLib
 import shlex
 import CommonLib
+import InstallerLib
 
 #
 #   获取某个目录下所有.bim文件。
@@ -24,7 +25,12 @@ def GetCmdList(FilePath):
     return shlex.split(GetCmdString(FilePath))
 
 def GetCmdString(FilePath):
-    return CommonLib.ReadFile(FilePath).replace('RGT.exe', 'RGT')
+    #
+    #   Construct absolue path, do not depends on the env variable.
+    #
+    Info = InstallerLib.GetConfigInfo()
+    ToolSetPath = PDOLib.GetValueFromPDO(os.path.join(Info['PDOFileDir'], Info['InstallationInventory']), 'ToolSet')
+    return CommonLib.ReadFile(FilePath).replace('RGT.exe', '"' + os.path.join(ToolSetPath, 'RGT') + '"')
 
 def WriteFile(FilePath,String):
     if 'Linux' in platform.system() and len(String) != 0:
@@ -83,6 +89,9 @@ def RunNormalCase(CmdString, SavePath):
     WriteFile(SavePath, RGTRet.stdout.read().strip('\n'))
 
 def DoAssemble(BimFilePath):
-    AsmRet = subprocess.Popen(['Assemble', BimFilePath], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
+    Info = InstallerLib.GetConfigInfo()
+    ToolSetPath = PDOLib.GetValueFromPDO(os.path.join(Info['PDOFileDir'], Info['InstallationInventory']), 'ToolSet')
+    AssembleTool = '"' + os.path.join(ToolSetPath, 'Assemble') + '"'
+    AsmRet = subprocess.Popen([AssembleTool, BimFilePath], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
     AsmRet.communicate()
     return AsmRet.returncode
