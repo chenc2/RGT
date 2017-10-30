@@ -1,17 +1,17 @@
 # -*- coding: UTF-8 -*-
-from ConfigLib import ConfigInfo
 import RunRGT
 import os
 import shutil
 import CommonLib
 import time
+from ConfigLib import ConfigInfo
 
 #
 #   Walk all test case and run.
 #
 def RunAllTestCase():
-    for parent,dirs,files in os.walk(ConfigInfo.TestCaseDir):
-        if ConfigInfo.CmdFileName in files:
+    for parent,dirs,files in os.walk(ConfigInfo['TestCaseDir']):
+        if ConfigInfo['CmdFileName'] in files:
             print parent
             RunOneCase(parent)
 
@@ -29,15 +29,15 @@ def DeleteDir(ThePath):
 #   Run the test case of CasePath.
 #
 def RunOneCase(CasePath):
-    CmdFilePath = os.path.join(CasePath, ConfigInfo.CmdFileName)
-    TestDirPath = os.path.join(CasePath, ConfigInfo.TestDirName)
-    TestLogPath = os.path.join(CasePath, ConfigInfo.TestDirName, ConfigInfo.TestLogName)
-    ProjectPath = os.path.join(os.getcwd(), ConfigInfo.ProjectName)
+    CmdFilePath = os.path.join(CasePath, ConfigInfo['CmdFileName'])
+    TestDirPath = os.path.join(CasePath, ConfigInfo['TestDirName'])
+    TestLogPath = os.path.join(CasePath, ConfigInfo['TestDirName'], ConfigInfo['TestLogName'])
+    ProjectPath = os.path.join(os.getcwd(), ConfigInfo['ProjectName'])
 
     CommonLib.CreateDir(ProjectPath)
     CommonLib.CreateDir(TestDirPath)
-    DstBimFilePath = RunRGT.CopyBimx(CmdFilePath, ConfigInfo.BimxFileDir, ProjectPath)
-    ConfCase = os.path.basename(ConfigInfo.TestCaseDir)
+    DstBimFilePath = RunRGT.CopyBimx(CmdFilePath, ConfigInfo['BimxFileDir'], ProjectPath)
+    ConfCase = os.path.basename(ConfigInfo['TestCaseDir'])
     
     if CasePath.find(ConfCase+'/Conf') != -1 or CasePath.find(ConfCase+'\Conf') != -1:
         RunRGT.RunErrCase(CmdFilePath, TestLogPath)
@@ -57,8 +57,8 @@ def RunOneCase(CasePath):
 def RunCaseDebug(Skip = True):
     SList = CommonLib.ReadFileList('List.txt')
 
-    for parent,dirs,files in os.walk(ConfigInfo.TestCaseDir):
-        if ConfigInfo.CmdFileName in files:
+    for parent,dirs,files in os.walk(ConfigInfo['TestCaseDir']):
+        if ConfigInfo['CmdFileName'] in files:
             if Skip and parent not in SList:
                 print parent
                 RunOneCase(parent)
