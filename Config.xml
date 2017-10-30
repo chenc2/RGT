@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-  <!--	The following 12 configuration is default settings,
+  <!--	The following 10 configuration is default settings,
 		If you want to change, please make sure you are 
 		familiar with the logic of test process.
   -->
@@ -19,13 +19,15 @@
 
   <ProjectName>TempProject</ProjectName>
   <CaseRootTxt>CaseRoot.txt</CaseRootTxt>
-
-  <WinPDOFileDir>C:\Program Files (x86)\Intel\Intel(R) Firmware Engine\etc</WinPDOFileDir>
-  <LinPDOFileDir></LinPDOFileDir>
   
+  <!-- Manual -->
+  <ExceptionDir>NULL</ExceptionDir>
+
+  <!-- Special repo for RGT command line test -->
+  <RGTRepository>C:\Users\Public\Repository\Intel_Firmware_Engine_3_0</RGTRepository>
+
   <!-- Make sure the following configuration is match with your test environment-->
   <TestCaseDir>C:\Users\chenche4\Desktop\RGT Test Case</TestCaseDir>
   <BimxFileDir>C:\Users\chenche4\Desktop\RGT Test Case\BIMFiles</BimxFileDir>
   <ResultDir>C:\Users\chenche4\Desktop\RGT Test Case</ResultDir>
-  <ExceptionDir>C:\Users\chenche4\Desktop\SC_2nd\Win-ExpectionList</ExceptionDir>
 </Root>
