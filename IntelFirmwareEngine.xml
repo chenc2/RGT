@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!-- Installer location -->
+  <InstallerDir>\\shwde9589\Share\DailyInstaller</InstallerDir>
+  
+  <!-- If you install isntaller by default settings, you should not -->
+  <!-- modify the following sections, unless you are familiar. -->
+  <WinPDOFileDir>C:\Program Files (x86)\Intel\Intel(R) Firmware Engine\etc</WinPDOFileDir>
+  <LinPDOFileDir>/opt/Intel/Intel(R) Firmware Engine/etc</LinPDOFileDir>
+  <InstallationInventory>InstallationInventory.pdo</InstallationInventory>
+  <PlatformProjectInventory>PlatformProjectInventory.pdo</PlatformProjectInventory>
+  <RepositoryInventory>RepositoryInventory.pdo</RepositoryInventory>
+  <ToolsetInventory>ToolsetInventory.pdo</ToolsetInventory>
+</Root>
