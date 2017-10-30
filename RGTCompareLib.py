@@ -111,6 +111,9 @@ def CompareOneCaseLog(ExpectedLogPath,TestLogPath,LogSavePath):
     ExpectedString = CommonLib.ReadFile(ExpectedLogPath)
     TestLogString = CommonLib.ReadFile(TestLogPath)
 
+    ExpectedString = CommonLib.ConvertAndStripString(ExpectedString)
+    TestLogString = CommonLib.ConvertAndStripString(TestLogString)
+
     #
     #   试图比较正确的log信息。
     #
