@@ -3,7 +3,6 @@ import os
 import CSVLib
 import shutil
 import platform
-import ConfigLib
 import CommonLib
 
 def CheckExpectedCSV(ExpectedPath):
@@ -43,18 +42,23 @@ def CheckTCS(ThePath, Expected, Command, CleanUp):
         print 'TCS:',ThePath, 'Not include', Command
         assert(False)
 
-def RecursiveCheckTCS(RootPath, Expected, Command, CleanUp = False):
-    for parent,dirs,files in os.walk(RootPath):
-        for file in files:
-            if Command in file:
-                CheckTCS(parent, Expected, Command, CleanUp)
-                if 'Linux' in platform.system():
-                    String = CommonLib.ReadFile(os.path.join(parent, Expected, ConfigLib.ConfigInfo.ExpectedLogName))
-                    String = CommonLib.ToUnixFormat(String)
-                    CommonLib.WriteFile(os.path.join(parent, Expected, ConfigLib.ConfigInfo.ExpectedLogName), String)
+def ConvertExpectedLogFile(LogFilePath):
+    CommonLib.WriteFile(LogFilePath, CommonLib.ToUnixFormat(CommonLib.ReadFile(LogFilePath)))
+
+#
+#   Check and make sure each test case is correct.
+#
+def RecursiveCheckTCS(TestCaseDir, ExpectedDirName, ExpectedLogName, CmdFileName):
+    for parent,dirs,files in os.walk(TestCaseDir):
+        if CmdFileName in files:
+            CheckTCS(parent, ExpectedDirName, CmdFileName, False)
+            if 'Linux' in platform.system():
+                ConvertExpectedLogFile(os.path.join(parent, ExpectedDirName, ExpectedLogName))
 
 #
 #   Clean up all files except 'Expected' and 'Command'.
 #
-def RecursiveCleanUpTCS(RootPath, Expected, Command):
-    RecursiveCheckTCS(RootPath, Expected, Command, True)
+def RecursiveCleanUpTCS(TestCaseDir, ExpectedDirName, CmdFileName):
+    for parent,dirs,files in os.walk(TestCaseDir):
+        if CmdFileName in files:
+            CheckTCS(parent, ExpectedDirName, CmdFileName, True)

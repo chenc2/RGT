@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 import os
 import platform
-import ConfigLib
 import CommonLib
 
 #
@@ -16,16 +15,16 @@ def ReplaceEx(FilePath, OldString, NewString):
 #   Maybe the path 'C:\Users\chenche4\Desktop\RGT Test Case' is an invalid path in another OS.
 #   So we replace it by actually path.
 #
-def RecursiveReplaceCmd(RootPath):
-    OldStr = CommonLib.ReadFile(os.path.join(RootPath,ConfigLib.ConfigInfo.CaseRootTxt))
-    NewStr = RootPath
+def RecursiveReplaceCmd(TestCaseDir, CaseRootTxt, CmdFileName):
+    OldStr = CommonLib.ReadFile(os.path.join(TestCaseDir,CaseRootTxt))
+    NewStr = TestCaseDir
 
     if OldStr == NewStr:
         return
 
-    for parent,dirs,files in os.walk(RootPath):
+    for parent,dirs,files in os.walk(TestCaseDir):
         for file in files:
-            if file == ConfigLib.ConfigInfo.Command:
+            if file == CmdFileName:
                 ReplaceEx(os.path.join(parent, file), OldStr, NewStr)
                 if 'Linux' in platform.system():
                     ReplaceEx(os.path.join(parent, file), '\\', '/')
@@ -33,4 +32,4 @@ def RecursiveReplaceCmd(RootPath):
     #
     #   Update the path.
     #
-    CommonLib.WriteFile(os.path.join(RootPath,ConfigLib.ConfigInfo.CaseRootTxt), NewStr)
+    CommonLib.WriteFile(os.path.join(TestCaseDir,CaseRootTxt), NewStr)
