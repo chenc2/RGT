@@ -2,6 +2,9 @@
 import os
 import CSVLib
 import shutil
+import CommonLib
+import RGTCompareLib
+from ConfigLib import ConfigInfo
 
 #
 #	1. 确保路径合法且正确。
@@ -161,3 +164,26 @@ def SaveResultToFile(Triple, String, FilePath):
         fd.write('#########################################Multi Information#########################################\n')
         fd.write(String)
     fd.close()
+
+def Compare():
+    ExceptionContentList = []
+    if os.path.isfile(ConfigInfo['ExceptionDir']):
+        ExceptionContentList = ExpectionList.ReadExpectionContent(ConfigInfo['ExceptionDir'])
+
+    Result = []
+    for parent, dirs, files in os.walk(ConfigInfo['TestCaseDir']):
+        if ConfigInfo['CmdFileName'] in files:
+            CommonLib.CreateDir(os.path.join(parent, ConfigInfo['CompDirName']))
+
+            L = RGTCompareLib.CompareOneCase(
+                  os.path.join(parent, ConfigInfo['ExpectedDirName']),
+                  os.path.join(parent, ConfigInfo['TestDirName']),
+                  ConfigInfo['ExpectedLogName'],
+                  ConfigInfo['TestLogName'],
+                  os.path.join(parent,ConfigInfo['CompDirName'],ConfigInfo['CompCSVName']),
+                  os.path.join(parent,ConfigInfo['CompDirName'],ConfigInfo['CompLogName']),
+                  ExceptionContentList
+                )
+            Result.append(L)
+
+    return Result
