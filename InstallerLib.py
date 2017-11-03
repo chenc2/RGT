@@ -25,6 +25,42 @@ def InitializeInstallerLib():
     InstallerConfigInfo['RepositoryInventory'] = root.getElementsByTagName('RepositoryInventory')[0].firstChild.data
     InstallerConfigInfo['ToolsetInventory'] = root.getElementsByTagName('ToolsetInventory')[0].firstChild.data
 
+def WindowsSetEnvVar():
+    if 'Linux' in platform.system():
+        return
+
+    import win32api
+    import win32con
+
+    ToolSetPath = PDOLib.GetValueFromPDO(os.path.join(InstallerConfigInfo['PDOFileDir'], InstallerConfigInfo['ToolsetInventory']), 'Path')
+    Key = win32api.RegOpenKey(
+            win32con.HKEY_LOCAL_MACHINE,
+            "SYSTEM\\ControlSet001\\Control\\Session Manager\\Environment",
+            0,
+            win32con.KEY_ALL_ACCESS)
+    Value = list(win32api.RegQueryValueEx(Key, 'Path'))[0]
+    ValueList = Value.split(';')
+
+    NewValue = []
+    for EachValue in Value.split(';'):
+        if 'Intel(R) Firmware Engine' in EachValue:
+            continue
+        else:
+            NewValue.append(EachValue)
+    NewValue.append(ToolSetPath)
+
+    win32api.RegSetValueEx(Key, 'Path', 0, win32con.REG_SZ, ';'.join(NewValue))
+    win32api.RegCloseKey(Key)
+
+def LinuxSetEnvVar():
+    pass
+
+def SetEnvVar():
+    if 'Windows' in platform.system():
+        WindowsSetEnvVar()
+    else:
+        LinuxSetEnvVar()
+
 #
 #   检查PDO目录是否存在，并且检查4个.pdo文件是否存在。
 #   该函数仅仅检查目录或文件是否存在，并不对.pdo文件内容进行检查。
