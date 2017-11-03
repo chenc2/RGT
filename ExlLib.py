@@ -23,7 +23,7 @@ def SaveReport(ResultInfo, ResultDir):
         Sheet.write(Row, 1, Case[1])
         Sheet.write(Row, 2, Case[2])
 
-        if Case[1] == u'[True]' and Case[2] == u'[True]':
+        if Case[1] == u'[True]' and (Case[2] == u'[True]' or Case[2] == u'[#True#]'):
             Sheet.write(Row, 3, u'Pass')
         else:
             Sheet.write(Row, 3, u'Fail')
