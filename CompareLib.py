@@ -2,8 +2,10 @@
 import os
 import CSVLib
 import shutil
+import re
 import CommonLib
 import RGTCompareLib
+import ExpectionList
 from ConfigLib import ConfigInfo
 
 #
@@ -70,6 +72,39 @@ def CompareUniqueKeyDict(Dict1,Dict2):
             HasDiff = False
             for index in range(0,len(Buffer1)):
                 if Buffer1[index] == Buffer2[index]:
+                    continue
+
+                #
+                #   The following code are the flexible code.
+                #   You can according to the actual demand to change the comparing algorithm.
+                #
+
+                #
+                #   Flexible code 1.
+                #
+                pattern = re.compile("0x.* (.*KB)")
+                if pattern.match(Buffer1[index]) != None and pattern.match(Buffer2[index]) != None:
+                    continue
+
+                #
+                #   Flexible code 2.
+                #
+                pattern = re.compile("0x[0-9a-fA-F]{8}")
+                if pattern.match(Buffer1[index]) != None and pattern.match(Buffer2[index]) != None:
+                    continue
+
+                #
+                #   Flexible code 3.
+                #
+                pattern = re.compile(".*FD_FIRMWAREIMAGE\.fd")
+                if pattern.match(Buffer1[index]) != None and pattern.match(Buffer2[index]) != None:
+                    continue
+
+                #
+                #   Flexibility code ending.
+                #
+                if  Buffer1[index] == '"Specify the LPSS & SCC Devices Mode.<BR><BR>' and \
+                    Buffer2[index] == '"Specify the LPSS & SCC Devices Mode.<BR><BR> 0: ACPI Mode<BR> 1: PCI Mode<BR>"':
                     continue
 
                 HasDiff = True
@@ -167,7 +202,7 @@ def SaveResultToFile(Triple, String, FilePath):
 
 def Compare():
     ExceptionContentList = []
-    if os.path.isfile(ConfigInfo['ExceptionDir']):
+    if os.path.isdir(ConfigInfo['ExceptionDir']):
         ExceptionContentList = ExpectionList.ReadExpectionContent(ConfigInfo['ExceptionDir'])
 
     Result = []
