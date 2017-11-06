@@ -83,3 +83,12 @@ def CopyFolder(Src, Dst, DeleteSrc = False):
 
     if DeleteSrc:
         shutil.rmtree(Src)
+
+def DeleteFolder(Folder):
+    if os.path.isdir(Folder):
+        while 1:
+            try:
+                shutil.rmtree(Folder)
+                break
+            except:
+                pass
