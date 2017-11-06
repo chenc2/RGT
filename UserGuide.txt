@@ -1,0 +1,10 @@
+According to your system envrionment to change the Config.xml file.
+
+Windows:
+  Run "Run.bat" as administrator.
+
+Linux:
+  chmod a+x Run.sh
+  sudo ./Run.sh
+
+If you have any question, please contact chen.a.chen@intel.com.
