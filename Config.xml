@@ -22,7 +22,7 @@
   <CaseRootTxt>CaseRoot.txt</CaseRootTxt>
   
   <!-- Exception -->
-  <ExceptionDir>C:\Users\chenche4\Desktop\Win-ExceptionList</ExceptionDir>
+  <ExceptionDir>NULL</ExceptionDir>
 
   <!-- Special repo for RGT command line test -->
   <RGTRepository>C:\Intel_Firmware_Engine_3_0</RGTRepository>
@@ -34,7 +34,7 @@
   <ShareFolder>C:\RGT_Test_Sharing</ShareFolder>
 
   <!-- AutoReport -->
-  <SendTo>chen.a.chen@intel.com;weix.c.liu@intel.com;</SendTo>
+  <SendTo>chen.a.chen@intel.com;</SendTo>
   <CCTo>chen.a.chen@intel.com;</CCTo>
   <FailReport>FailReport.xls</FailReport>
 </Root>
