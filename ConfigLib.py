@@ -20,6 +20,7 @@ def InitializeConfigXml():
         'CmdFileName',
 
         'ProjectName',
+        'PreBuild',
         'CaseRootTxt',
 
         'ExceptionDir',
@@ -28,6 +29,11 @@ def InitializeConfigXml():
         'TestCaseDir',
         'BimxFileDir',
         'ResultDir',
+        'ShareFolder',
+
+        'SendTo',
+        'CCTo',
+        'FailReport',
     ]
 
     root = xml.dom.minidom.parse('Config.xml').documentElement
@@ -40,7 +46,8 @@ def InitializeConfigXml():
         'TestCaseDir',
         'BimxFileDir',
         'ResultDir',
-        'RGTRepository'
+        'RGTRepository',
+        'ShareFolder',
     ]
     for Dir in CheckDir:
         if not os.path.isdir(ConfigInfo.get(Dir)):
@@ -48,4 +55,8 @@ def InitializeConfigXml():
             assert(False)
 
 def GetConfigInfo():
+    if len(ConfigInfo) == 0:
+        print 'Lib is not initialized.'
+        assert(False)
+
     return ConfigInfo

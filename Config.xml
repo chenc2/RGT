@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-  <!--	The following 10 configuration is default settings,
+  <!--	The following 11 configuration is default settings,
 		If you want to change, please make sure you are 
 		familiar with the logic of test process.
   -->
@@ -18,16 +18,23 @@
   <CmdFileName>cmd.txt</CmdFileName>
 
   <ProjectName>TempProject</ProjectName>
+  <PreBuild>PreBuild</PreBuild>
   <CaseRootTxt>CaseRoot.txt</CaseRootTxt>
   
-  <!-- Manual -->
-  <ExceptionDir>NULL</ExceptionDir>
+  <!-- Exception -->
+  <ExceptionDir>C:\Users\chenche4\Desktop\Win-ExceptionList</ExceptionDir>
 
   <!-- Special repo for RGT command line test -->
-  <RGTRepository>C:\Users\Public\Repository\Intel_Firmware_Engine_3_0</RGTRepository>
+  <RGTRepository>C:\Intel_Firmware_Engine_3_0</RGTRepository>
 
   <!-- Make sure the following configuration is match with your test environment-->
   <TestCaseDir>C:\Users\chenche4\Desktop\RGT Test Case</TestCaseDir>
   <BimxFileDir>C:\Users\chenche4\Desktop\RGT Test Case\BIMFiles</BimxFileDir>
   <ResultDir>C:\Users\chenche4\Desktop\RGT Test Case</ResultDir>
+  <ShareFolder>C:\RGT_Test_Sharing</ShareFolder>
+
+  <!-- AutoReport -->
+  <SendTo>chen.a.chen@intel.com;weix.c.liu@intel.com;</SendTo>
+  <CCTo>chen.a.chen@intel.com;</CCTo>
+  <FailReport>FailReport.xls</FailReport>
 </Root>
