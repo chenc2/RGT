@@ -1,3 +1,9 @@
+# Add by chen
+.vs/
+OC-RGT.pyproj
+OC-RGT.sln
+profile.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
