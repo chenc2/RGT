@@ -78,7 +78,6 @@ if __name__ == '__main__':
     #   14. Compare the test result.
     #   15. Save the compare result to .xls file.
     #
-    '''
     InstallerLib.SetEnvVar()
     TCSLib.RecursiveCheckTCS(TestCaseDir, ExpectedDirName, ExpectedLogName, CmdFileName)
     TCSLib.RecursiveCleanUpTCS(TestCaseDir, ExpectedDirName, CmdFileName)
@@ -87,12 +86,12 @@ if __name__ == '__main__':
     PDOLib.ModifyPDOFile(RepositoryPDOFilePath, "Path", RGTRepository)
     PDOLib.ModifyPDOFile(PlatformProjPDOFilePath, "Path", os.path.join(os.getcwd(), ProjectName))
     PDOLib.ModifyPDOFile(InstallationPDOFilePath, "Repository", RGTRepository)
+    UpdateBim.UpdateBim(InstallationPDOFilePath,BimxFileDir)
     UpdateRepository.DoUpdateRepo(RGTRepository)
     BimMapFolder = PreBuildLib.DoPreBuild(BimxFileDir, PreBuildFolder)
     DoRun.RunAllTestCase(BimMapFolder)
     PreBuildLib.CleanUpPreBuild(PreBuildFolder)
     CommonLib.CopyFolder(TempEtcPath, InstallerLib.InstallerConfigInfo['PDOFileDir'], True)
-    '''
     CompareResult = CompareLib.Compare()
     ExlLib.SaveReport(CompareResult, ResultDir)
 
