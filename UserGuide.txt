@@ -1,7 +1,11 @@
 According to your system envrionment to change the Config.xml file.
 
 Windows:
-  Run "Run.bat" as administrator.
+  Open command prompt as administrator, and type python main.py [--autoreport] [--installer]
+  [--autoreport]:
+    Test framework will automatically send the result report when finish.
+  [--installer]:
+    Test framework will atuomatically download the newest installer and then install the newest installer.
 
 Linux:
   chmod a+x Run.sh
