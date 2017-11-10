@@ -24,13 +24,11 @@ def DoPreBuild(BimxFileDir, PreBuildFolder):
         DstFile = os.path.join(PreBuildFolder, file[:-5], file)
         shutil.copyfile(SrcFile, DstFile)
         
-        '''
         AsmRet = subprocess.Popen(['Assemble', DstFile], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         AsmRet.communicate()
         if AsmRet.returncode != 0:
             print DstFile,'Pre build fail, please check.'
             assert(False)
-        '''
 
         BimMapPath[file[:-5]] = os.path.join(PreBuildFolder, file[:-5])
 
