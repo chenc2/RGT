@@ -6,9 +6,9 @@ import CommonLib
 #
 #   更新.bimx文件中ToolPath和Repository的值，需要符合当前测试环境。
 #
-def UpdateBim(InstallerPDO, BimxFileDir):
-    ToolPath = '"' + PDOLib.GetValueFromPDO(InstallerPDO, 'ToolSet') + '"'
-    RepoPath = '"' + PDOLib.GetValueFromPDO(InstallerPDO, 'Repository') + '"'
+def UpdateBim(InstallationPDO, BimxFileDir):
+    ToolPath = '"' + PDOLib.GetValueFromPDO(InstallationPDO, 'ToolSet') + '"'
+    RepoPath = '"' + PDOLib.GetValueFromPDO(InstallationPDO, 'Repository') + '"'
 
     for file in os.listdir(BimxFileDir):
         String = CommonLib.ReadFile(os.path.join(BimxFileDir, file))
