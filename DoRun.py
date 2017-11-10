@@ -12,6 +12,7 @@ def CopyBimxToWorkSpace(CmdFilePath, BimxMapFolder, WorkSpace):
     Commands = CommonLib.ReadFile(CmdFilePath)
     for BimxFileName in BimxMapFolder.keys():
         if Commands.find(BimxFileName) != -1:
+            CommonLib.DeleteFolder(WorkSpace)
             shutil.copytree(BimxMapFolder.get(BimxFileName), WorkSpace)
             break
 
