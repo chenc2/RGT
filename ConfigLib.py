@@ -55,7 +55,7 @@ def InitializeConfigXml():
             assert(False)
 
     if 'Linux' not in platform.system():
-        if not os.path.isdir(Config.get('ShareFolder')):
+        if not os.path.isdir(ConfigInfo.get('ShareFolder')):
             print ConfigInfo.get(Dir),'is an invalid path, please check.(ConfigLib)'
             assert(False)
 
