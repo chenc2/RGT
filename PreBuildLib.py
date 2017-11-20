@@ -24,6 +24,7 @@ def DoPreBuild(BimxFileDir, PreBuildFolder):
         DstFile = os.path.join(PreBuildFolder, file[:-5], file)
         shutil.copyfile(SrcFile, DstFile)
         
+        print 'Try to assemble:',DstFile
         AsmRet = subprocess.Popen(['Assemble', DstFile], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False)
         AsmRet.communicate()
         if AsmRet.returncode != 0:
