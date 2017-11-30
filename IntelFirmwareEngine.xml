@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <!-- Installer location -->
-  <InstallerDir>\\shwde9589\Share\DailyInstaller</InstallerDir>
+  <InstallerDir>\\shwdenucserver\DailyInstaller</InstallerDir>
   
   <!-- If you install isntaller by default settings, you should not -->
   <!-- modify the following sections, unless you are familiar. -->
