@@ -70,28 +70,33 @@ if __name__ == '__main__':
     #   4. Replace the commnad path in cmd.txt file.
     #   5. Back up etc folder.
     #   6-8. Change PDO file for test.
-    #   9. Update the special repository.
-    #   10. Do pre-build on .bimx files.
-    #   11. Run all test case.
-    #   12. Clean up the pre-build result.
-    #   13. Recover the etc folder.
-    #   14. Compare the test result.
-    #   15. Save the compare result to .xls file.
+    #   9. Update the .bimx files.
+    #   10. Update the special repository.
+    #   11. Do pre-build on .bimx files.
+    #   12. Run all test case.
+    #   13. Clean up the pre-build result.
+    #   14. Recover the etc folder.
+    #   15. Compare the test result.
+    #   16. Save the compare result to .xls file.
     #
     InstallerLib.SetEnvVar()
     TCSLib.RecursiveCheckTCS(TestCaseDir, ExpectedDirName, ExpectedLogName, CmdFileName)
     TCSLib.RecursiveCleanUpTCS(TestCaseDir, ExpectedDirName, CmdFileName)
     CmdLib.RecursiveReplaceCmd(TestCaseDir, CaseRootTxt, CmdFileName)
+
     CommonLib.CopyFolder(InstallerLib.InstallerConfigInfo['PDOFileDir'], TempEtcPath)
     PDOLib.ModifyPDOFile(RepositoryPDOFilePath, "Path", RGTRepository)
     PDOLib.ModifyPDOFile(PlatformProjPDOFilePath, "Path", os.path.join(os.getcwd(), ProjectName))
     PDOLib.ModifyPDOFile(InstallationPDOFilePath, "Repository", RGTRepository)
     UpdateBim.UpdateBim(InstallationPDOFilePath,BimxFileDir)
+
     UpdateRepository.DoUpdateRepo(RGTRepository)
     BimMapFolder = PreBuildLib.DoPreBuild(BimxFileDir, PreBuildFolder)
+
     DoRun.RunAllTestCase(BimMapFolder)
     PreBuildLib.CleanUpPreBuild(PreBuildFolder)
     CommonLib.CopyFolder(TempEtcPath, InstallerLib.InstallerConfigInfo['PDOFileDir'], True)
+
     CompareResult = CompareLib.Compare()
     ExlLib.SaveReport(CompareResult, ResultDir)
 

@@ -2,6 +2,7 @@
 import xml.dom.minidom
 import os
 import InstallerLib
+import platform
 
 ConfigInfo = dict()
 
@@ -47,10 +48,14 @@ def InitializeConfigXml():
         'BimxFileDir',
         'ResultDir',
         'RGTRepository',
-        'ShareFolder',
     ]
     for Dir in CheckDir:
         if not os.path.isdir(ConfigInfo.get(Dir)):
+            print ConfigInfo.get(Dir),'is an invalid path, please check.(ConfigLib)'
+            assert(False)
+
+    if 'Linux' not in platform.system():
+        if not os.path.isdir(ConfigInfo.get('ShareFolder')):
             print ConfigInfo.get(Dir),'is an invalid path, please check.(ConfigLib)'
             assert(False)
 

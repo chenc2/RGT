@@ -42,6 +42,18 @@ def RunOneCase(CasePath, BimMapFolder):
     CopyBimxToWorkSpace(CmdFilePath, BimMapFolder, WorkSpace)
     ConfCase = os.path.basename(ConfigInfo['TestCaseDir'])
     
+    #
+    #   For "Conf/FirmwareReport/TCS185" test case, pre-build data will inflect test result.
+    #   So delete the pre-buid data and just remain the .bimx file and do the test.
+    #
+    if CasePath[len(ConfigInfo['TestCaseDir']) + 1:] == 'Conf/FirmwareReport/TCS185' or \
+       CasePath[len(ConfigInfo['TestCaseDir']) + 1:] == 'Conf\FirmwareReport\TCS185':
+        for file in os.listdir(WorkSpace):
+            if file[-5:] == '.bimx':
+                continue
+            else:
+                CommonLib.DeleteFolder(os.path.join(WorkSpace, file))
+
     if CasePath.find(ConfCase+'/Conf') != -1 or CasePath.find(ConfCase+'\Conf') != -1:
         RunRGT.RunErrCase(CmdFilePath, TestLogPath)
     elif CasePath.find('HelpVersion') != -1:

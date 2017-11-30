@@ -99,6 +99,15 @@ def CompareUniqueKeyDict(Dict1,Dict2):
                 pattern = re.compile(".*FD_FIRMWAREIMAGE\.fd")
                 if pattern.match(Buffer1[index]) != None and pattern.match(Buffer2[index]) != None:
                     continue
+                #
+                #	Flexbile code 4.
+                #	Buffer1 is expected result, Buffer2 is test result.
+                #	"0x80000047L" != "0x80000047"
+                #
+                pattern1 = re.compile('"0x[0-9a-fA-F]{8}L"')
+                pattern2 = re.compile('"0x[0-9a-fA-F]{8}"')
+                if pattern1.match(Buffer1[index]) != None and pattern2.match(Buffer2[index]) != None:
+                    continue
 
                 #
                 #   Flexibility code ending.

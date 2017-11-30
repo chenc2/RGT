@@ -1,0 +1,12 @@
+Configure ./OC-RGT/Config.xml file.
+Necessary secitons: <TestCaseDir>, <BimxFileDir>, <ResultDir>
+Optional  sections: <ShareFolder>, <SendTo>, <CCTo>
+
+If you want to run this tool on windows and specified "--autoreport" flag, you should make sure the values of <ShareFolder>, <SendTo> and <CCTo> are valid.
+
+Configure ./OC-RGT/IntelFirmwareEngine.xml file.
+Optional  sections: <InstallerDir>
+
+If you want to run this tool on windows and specified "--installer" flag, you should make sure the value of <ShareFolder> is a valid path.
+
+Beyond above metioned sections, you should not modify any sections before you are familiar with this framework.
