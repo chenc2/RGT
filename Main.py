@@ -61,7 +61,8 @@ if __name__ == '__main__':
     #   Just for windows.
     #
     if "--installer" in Parameters:
-        InstallerLib.WindowsInstaller()
+        if not InstallerLib.WindowsInstaller():
+            quit()
 
     #
     #   1. Set environment variable.
