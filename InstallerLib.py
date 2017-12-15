@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import platform
 import xml.dom.minidom
+import re
 
 InstallerConfigInfo = dict()
 
@@ -104,10 +105,14 @@ def WindowsInstaller():
         TryCount = TryCount + 1
     
     #
-    #   如果已经安装并且版本号相同，不重新安装Installer。
+    #   如果已经安装并且是最新版本，则不需要重新安装；否则重新安装并且记录SdbTool的版本号。
     #
-    if CheckWetherInstalled():  
-        if CommonLib.ReadFileList(os.path.join(InstallerConfigInfo.get('InstallerDir'), "Readme.txt"))[1] == GetInstallerVersion():
+    if CheckWetherInstalled():
+        FileListContent = CommonLib.ReadFileList(os.path.join(InstallerConfigInfo['InstallerDir'], "Readme.txt"))
+        InstallerConfigInfo['SdbToolVersion'] = FileListContent[1]
+        Str                                   = FileListContent[0]
+
+        if re.search('\W(\d+)\s', Str).group(1) == GetInstallerVersion():
             print 'No updating today.'
             return False
 

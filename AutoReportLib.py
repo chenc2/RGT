@@ -115,11 +115,15 @@ def GenHtmReportAndSendReport(PassNumber, FailNumber, ShareLocation):
     DriverDisk = ShareLocation[:ShareLocation.find('\\')]
     Link = ShareLocation.replace(DriverDisk, '\\\\' + socket.gethostname())
 
+    SdbToolVer = InstallerInfo.get('SdbToolVersion')
+    if SdbToolVer == None:
+        SdbToolVer = '0'
+
     htm = GenerateHtmReport.GenerateHtmReport(
             os.path.join(os.getcwd(), 'report.htm'),
             'RGT Command Line',
             time.strftime('%Y-%m-%d', time.localtime()),
-            PDOLib.GetValueFromPDO(os.path.join(InstallerInfo['PDOFileDir'], InstallerInfo['ToolsetInventory']), 'ToolVersion'), 
+            SdbToolVer, 
             PDOLib.GetValueFromPDO(os.path.join(InstallerInfo['PDOFileDir'], InstallerInfo['InstallationInventory']), 'ProductVersion'),
             PassNumber,
             FailNumber,
