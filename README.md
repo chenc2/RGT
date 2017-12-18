@@ -1,2 +1,2 @@
 # OC-RGT
-Automation framework for test RGT command line.
+Command line automation test framework for the sdbtool of RGT.
